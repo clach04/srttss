@@ -39,7 +39,7 @@ class Espeak(BaseTTS):
     """Use eSpeak command line tool http://espeak.sourceforge.net/"""
     def gen_mp3(self, text, lang='en'):
         # uses pipes and stdin/out - does NOT materialize audio files to file system
-        argv = ['/usr/bin/espeak', '--stdin', '--stdout']  # TODO hard coded path
+        argv = ['/usr/bin/espeak', '--stdin', '--stdout', '-v', lang]  # TODO hard coded path
         if not text.endswith("\n"):
             text = text + "\n"
 
@@ -78,7 +78,7 @@ class Espeak(BaseTTS):
 
     def gen_wave(self, text, lang='en'):
         # dupes alot of gen_wave() :-(
-        argv = ['/usr/bin/espeak', '--stdin', '--stdout']  # TODO hard coded path
+        argv = ['/usr/bin/espeak', '--stdin', '--stdout', '-v', lang]  # TODO hard coded path
         if not text.endswith("\n"):
             text = text + "\n"
 

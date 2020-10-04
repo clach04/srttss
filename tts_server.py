@@ -3,7 +3,9 @@
 # vim:ts=4:sw=4:softtabstop=4:smarttab:expandtab
 #
 
+import logging
 import os
+import subprocess
 import sys
 
 try:
@@ -14,13 +16,56 @@ except ImportError:
     
 
 from flask import Flask
+from flask import Response
 from flask import redirect
 from flask import request
 
 
+version_tuple = (0, 0, 1)
+version = version_string = __version__ = '%d.%d.%d' % version_tuple
+__author__ = 'clach04'
+
+log = logging.getLogger(__name__)
+logging.basicConfig()  # TODO include function name/line numbers in log
+log.setLevel(level=logging.DEBUG)  # Debug hack!
+
+log.info('Python %s on %s', sys.version, sys.platform)
+
 
 class BaseTTS(object):
-    pass
+    pass  # nothing shared yet
+
+class Espeak(BaseTTS):
+    """Use eSpeak command line tool http://espeak.sourceforge.net/"""
+    def gen_wave(self, text, lang='en'):
+        argv = ['/usr/bin/espeak', '--stdin', '--stdout']  # TODO hard coded path
+        if not text.endswith("\n"):
+            text = text + "\n"
+
+        try:
+            proc = subprocess.Popen(argv, stdin=subprocess.PIPE, stdout=subprocess.PIPE, close_fds=True)
+        except Exception as e:
+            log.warn("Cannot create pipe: %s" % e)
+            return None
+
+        try:
+            proc.stdin.write(text.encode('utf-8'))
+        except IOError as e:
+            log.warn("Cannot write to pipe: errno %d" % (e.errno))
+            return None
+        except Exception as e:
+            log.warn("Cannot write to pipe: %s" % e)
+            return None
+
+        #proc.stdin.close()
+        #proc.wait()
+        stdout_data, stderr_data = proc.communicate()  # add timeout?
+        print(stderr_data)
+        print(len(stdout_data))
+        print(type(stdout_data))
+        # TODO read it back :-)
+        return stdout_data
+
 
 class Google(BaseTTS):
     """Use google translate TTS interface"""
@@ -42,6 +87,7 @@ class Google(BaseTTS):
         return result
 
 engines = {
+    'espeak': Espeak(),
     'google': Google(),
 }
 
@@ -64,10 +110,15 @@ def tts():
     lang = voice_split[1]  # TODO review this...
     engine = engines[engine_name]
 
-    url = engine.gen_url(text, lang=lang)
-    print(url)
-    return redirect(url)
+    try:
+        url = engine.gen_url(text, lang=lang)
+        print(url)
+        return redirect(url)
+    except AttributeError:
+        # and/or NotImplemented?
 
+        result = engine.gen_wave(text, lang=lang)
+        return Response(result, mimetype='audio/wav')
 
 def main(argv=None):
     if argv is None:

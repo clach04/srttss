@@ -37,7 +37,47 @@ class BaseTTS(object):
 
 class Espeak(BaseTTS):
     """Use eSpeak command line tool http://espeak.sourceforge.net/"""
+    def gen_mp3(self, text, lang='en'):
+        # uses pipes and stdin/out - does NOT materialize audio files to file system
+        argv = ['/usr/bin/espeak', '--stdin', '--stdout']  # TODO hard coded path
+        if not text.endswith("\n"):
+            text = text + "\n"
+
+        try:
+            proc = subprocess.Popen(argv, stdin=subprocess.PIPE, stdout=subprocess.PIPE, close_fds=True)
+        except Exception as e:
+            log.warn("Cannot create espeak pipe: %s" % e)
+            return None
+
+        try:
+            proc_ffmpeg = subprocess.Popen(['ffmpeg', '-i', '-', '-f', 'mp3', '-'], stdin=proc.stdout, stdout=subprocess.PIPE, close_fds=True)
+        except Exception as e:
+            log.warn("Cannot create ffmpeg pipe: %s" % e)
+            return None
+
+        try:
+            proc.stdin.write(text.encode('utf-8'))
+        except IOError as e:
+            log.warn("Cannot write to pipe: errno %d" % (e.errno))
+            return None
+        except Exception as e:
+            log.warn("Cannot write to pipe: %s" % e)
+            return None
+
+        proc.stdin.close()
+        proc.wait()
+        print('pre communicate')
+        stdout_data, stderr_data = proc_ffmpeg.communicate()  # add timeout?
+        print('post communicate')
+        print(stderr_data)
+        print(len(stdout_data))
+        print(type(stdout_data))
+        # TODO read it back :-)
+        return stdout_data
+
+
     def gen_wave(self, text, lang='en'):
+        # dupes alot of gen_wave() :-(
         argv = ['/usr/bin/espeak', '--stdin', '--stdout']  # TODO hard coded path
         if not text.endswith("\n"):
             text = text + "\n"
@@ -117,8 +157,13 @@ def tts():
     except AttributeError:
         # and/or NotImplemented?
 
+        """
         result = engine.gen_wave(text, lang=lang)
         return Response(result, mimetype='audio/wav')
+        """
+
+        result = engine.gen_mp3(text, lang=lang)
+        return Response(result, mimetype='audio/mp3')
 
 def main(argv=None):
     if argv is None:

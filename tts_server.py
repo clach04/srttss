@@ -76,8 +76,8 @@ class Espeak(BaseTTS):
         return stdout_data
 
 
-    def gen_wave(self, text, lang='en'):
-        # dupes alot of gen_wave() :-(
+    def gen_wav(self, text, lang='en'):
+        # dupes alot of gen_mp3() :-(
         argv = ['/usr/bin/espeak', '--stdin', '--stdout', '-v', lang]  # TODO hard coded path
         if not text.endswith("\n"):
             text = text + "\n"
@@ -173,12 +173,18 @@ def tts():
 def google_translate():
     lang = request.args.get('l', 'en')
     text = request.args.get('q', 'hey there')  # TODO error if missing
+    mimetype = request.args.get('srttss_mimetype', 'audio/mp3')  # NOTE non-standard extension
     # everything else is ignored, assumume single phrase "translate" (TTS)
     engine_name = 'espeak'
     print(text)
     engine = engines[engine_name]
-    result = engine.gen_mp3(text, lang=lang)
-    return Response(result, mimetype='audio/mp3')
+    if mimetype == 'audio/mp3':
+        result = engine.gen_mp3(text, lang=lang)
+    elif mimetype == 'audio/wav':
+        result = engine.gen_wav(text, lang=lang)
+    else:
+        return Response('Unsupported mimetype requested', status=415)  # possibly an abuse of 415 status ;-) 415 Unsupported Media Type
+    return Response(result, mimetype=mimetype)
 
 
 def main(argv=None):

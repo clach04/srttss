@@ -36,6 +36,9 @@ Google Translate emulator - no control over TTS engine used, requires eSpeak:
   * http://127.0.0.1:5000/translate_tts?ttsspeed=1&l=en&q=hello+world&tl=en&client=tw-ob&total=1&ie=UTF-8
   * http://127.0.0.1:5000/translate_tts?l=en&q=hello+world
   * http://127.0.0.1:5000/translate_tts?q=hello+world
+  * Non-standard extension:
+      * http://127.0.0.1:5000/translate_tts?q=hello+world&srttss_mimetype=audio/mp3
+      * http://127.0.0.1:5000/translate_tts?q=hello+world&srttss_mimetype=audio/wav
 
 Curl/wget does work:
 

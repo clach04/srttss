@@ -107,7 +107,7 @@ class Espeak(BaseTTS):
         return stdout_data
 
 
-class Google(BaseTTS):
+class GoogleTranslate(BaseTTS):
     """Use google translate TTS interface"""
     def gen_url(self, text, lang='en'):
         print(text)
@@ -128,7 +128,7 @@ class Google(BaseTTS):
 
 engines = {
     'espeak': Espeak(),
-    'google': Google(),
+    'google_translate': GoogleTranslate(),
 }
 
 app = Flask(__name__)
@@ -136,12 +136,12 @@ app = Flask(__name__)
 
 # Similar (subset of) https://github.com/synesthesiam/opentts
 """ Sample URLs
-    'http://127.0.0.1:5000/api/tts?text=no&voice=google:en'
-    'http://127.0.0.1:5000/api/tts?text=nein&voice=google:de'
+    'http://127.0.0.1:5000/api/tts?text=no&voice=google_translate:en'
+    'http://127.0.0.1:5000/api/tts?text=nein&voice=google_translate:de'
 """
 @app.route('/api/tts', methods=['GET'])
 def tts():
-    voice = request.args.get('voice', 'google:en')
+    voice = request.args.get('voice', 'google_translate:en')
     text = request.args.get('text', 'hey there')  # TODO error if missing
     print(text)
     print(voice)

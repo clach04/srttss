@@ -17,6 +17,7 @@ Run:
 
 Then open a browser to:
 
+  * http://127.0.0.1:5000/api/tts?text=no
   * http://127.0.0.1:5000/api/tts?text=no&voice=google_translate:en
   * http://127.0.0.1:5000/api/tts?text=nein&voice=google_translate:de
   * http://127.0.0.1:5000/api/tts?text=没有&voice=google_translate:zh-cn

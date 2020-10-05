@@ -135,6 +135,7 @@ app = Flask(__name__)
 
 
 # Similar (subset of) https://github.com/synesthesiam/opentts
+# NOTE unlike opentts which returns WAV, this currently returns mp3
 """ Sample URLs
     'http://127.0.0.1:5000/api/tts?text=no&voice=google_translate:en'
     'http://127.0.0.1:5000/api/tts?text=nein&voice=google_translate:de'
@@ -164,6 +165,21 @@ def tts():
 
         result = engine.gen_mp3(text, lang=lang)
         return Response(result, mimetype='audio/mp3')
+
+
+# Google translate TTS emulator
+# Most parameters ignored, returns mp3 payload
+@app.route('/translate_tts', methods=['GET'])
+def google_translate():
+    lang = request.args.get('l', 'en')
+    text = request.args.get('q', 'hey there')  # TODO error if missing
+    # everything else is ignored, assumume single phrase "translate" (TTS)
+    engine_name = 'espeak'
+    print(text)
+    engine = engines[engine_name]
+    result = engine.gen_mp3(text, lang=lang)
+    return Response(result, mimetype='audio/mp3')
+
 
 def main(argv=None):
     if argv is None:

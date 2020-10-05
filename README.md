@@ -25,9 +25,20 @@ Then open a browser to:
   * http://127.0.0.1:5000/api/tts?text=nein&voice=espeak:de
 
 
- Curl may not work.
+Curl/wget may not work (curl -L needed for redirects).
 
     curl 'http://127.0.0.1:5000/api/tts?text=nein&voice=google_translate:de'
     curl 'http://127.0.0.1:5000/api/tts?text=no&voice=espeak:en'
 
+
+Google Translate emulator - no control over TTS engine used, requires eSpeak:
+
+  * http://127.0.0.1:5000/translate_tts?ttsspeed=1&l=en&q=hello+world&tl=en&client=tw-ob&total=1&ie=UTF-8
+  * http://127.0.0.1:5000/translate_tts?l=en&q=hello+world
+  * http://127.0.0.1:5000/translate_tts?q=hello+world
+
+Curl/wget does work:
+
+    wget 'http://127.0.0.1:5000/translate_tts?q=hello+world'
+    curl 'http://127.0.0.1:5000/translate_tts?q=hello+world'
 

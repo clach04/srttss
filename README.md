@@ -1,4 +1,4 @@
-# SRTTSS - Second Rate (Text To Speach) TTS Server - REST interface
+# SRTTSS - Second Rate (Text To Speech) TTS Server - REST interface
 
 ## Getting Started
 

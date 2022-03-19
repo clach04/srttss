@@ -45,3 +45,9 @@ Curl/wget does work:
     wget 'http://127.0.0.1:5000/translate_tts?q=hello+world'
     curl 'http://127.0.0.1:5000/translate_tts?q=hello+world'
 
+
+## What can this be used for?
+
+What ever you want or can think of (hopefully for good rather than evil...).
+
+One use case is as an output target for https://github.com/jpmens/mqttwarn/blob/main/HANDBOOK.md#chromecast

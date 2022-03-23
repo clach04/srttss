@@ -51,3 +51,9 @@ Curl/wget does work:
 What ever you want or can think of (hopefully for good rather than evil...).
 
 One use case is as an output target for https://github.com/jpmens/mqttwarn/blob/main/HANDBOOK.md#chromecast
+
+## Future ideas
+
+  * Implement caching
+  * https://github.com/rhasspy/larynx (and/or other MaryTTS compatible servers)
+

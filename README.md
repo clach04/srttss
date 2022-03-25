@@ -8,7 +8,7 @@ If installing/working with a source checkout issue:
 
 
   * google_translate requires internet access.
-  * Using eSpeak requires an espeak binary, http://espeak.sourceforge.net/
+  * Using eSpeak requires an espeak (compatible) binary, http://espeak.sourceforge.net/ and/or https://github.com/espeak-ng/espeak-ng
       * `sudo apt-get install espeak`
 
 Run:

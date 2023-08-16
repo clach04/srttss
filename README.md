@@ -50,7 +50,7 @@ Curl/wget does work:
 
 What ever you want or can think of (hopefully for good rather than evil...).
 
-One use case is as an output target for https://github.com/jpmens/mqttwarn/blob/main/HANDBOOK.md#chromecast
+One use case is as an output target for https://github.com/mqtt-tools/mqttwarn/blob/main/docs/notifier-catalog.md#chromecast
 
 ## Future ideas
 

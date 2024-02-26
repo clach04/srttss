@@ -55,5 +55,6 @@ One use case is as an output target for https://github.com/mqtt-tools/mqttwarn/b
 ## Future ideas
 
   * Implement caching
-  * https://github.com/rhasspy/piper https://github.com/rhasspy/larynx command line or http (and/or other MaryTTS compatible servers)
+  * support new/additional backend engines https://github.com/clach04/srttss/issues/1
+      * https://github.com/rhasspy/piper https://github.com/rhasspy/larynx command line or http (and/or other MaryTTS compatible servers)
 

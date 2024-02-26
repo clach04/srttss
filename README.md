@@ -52,6 +52,8 @@ What ever you want or can think of (hopefully for good rather than evil...).
 
 One use case is as an output target for https://github.com/mqtt-tools/mqttwarn/blob/main/docs/notifier-catalog.md#chromecast
 
+Also see client https://github.com/clach04/tts_client
+
 ## Future ideas
 
   * Implement caching
